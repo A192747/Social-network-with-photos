@@ -1,0 +1,35 @@
+server:
+  port: 8765
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+#      routes:
+#          - id: user-service
+#            uri: lb://user-service
+#            predicates:
+#            - Path=/users/**
+#            filters:
+#             - name: AuthenticationFilter
+#
+#          - id: auth-service
+#            uri: lb://auth-service
+#            predicates:
+#            - Path=/auth/**
+#            filters:
+#              - name: AuthenticationFilter
+
+
+
+
+
+
+jwt:
+  secret: MiAVzqUXy5Tfr1kVIGpPMiAVzqUXy5Tfr1kVIGpP
+
