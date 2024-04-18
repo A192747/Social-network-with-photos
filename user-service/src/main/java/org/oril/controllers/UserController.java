@@ -1,14 +1,17 @@
 package org.oril.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.oril.dao.UserDAO;
-import org.oril.entities.AuthRequest;
-import org.oril.entities.UserVO;
-import org.oril.entities.NotValidException;
+import org.oril.dto.UserDTO;
+import org.oril.models.User;
+import org.oril.exceptions.NotValidException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.oril.entities.ErrorResponse;
+import org.oril.exceptions.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -17,20 +20,21 @@ import java.util.Date;
 @RequestMapping(value = "/users")
 @AllArgsConstructor
 public class UserController {
-
+    @Autowired
     private final UserDAO userDAO;
+    @Autowired
+    public final ModelMapper modelMapper;
+
     @PostMapping("/register")
-    public ResponseEntity<UserVO> save(@RequestBody AuthRequest userVO) {
-        return ResponseEntity.ok(userDAO.save(userVO));
+    public ResponseEntity<User> save(@RequestBody UserDTO user) {
+        return ResponseEntity.ok(userDAO.save(convertToUser(user)));
     }
     @PostMapping("/login")
-    public ResponseEntity<UserVO> login(@RequestBody AuthRequest userVO) {
-        return ResponseEntity.ok(userDAO.login(userVO));
+    public ResponseEntity<User> login(@RequestBody UserDTO user) {
+        return ResponseEntity.ok(userDAO.login(convertToUser(user)));
     }
-
-    @GetMapping("/secured")
-    public ResponseEntity<String> securedEndpoint() {
-        return ResponseEntity.ok("Hello, from secured endpoint!");
+    private User convertToUser(UserDTO user) {
+        return modelMapper.map(user, User.class);
     }
 
     @ExceptionHandler
