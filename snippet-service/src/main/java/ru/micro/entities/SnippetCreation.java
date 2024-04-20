@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SnippetCreation {
-    int postId;
+    private int postId;
     private String link;
 }

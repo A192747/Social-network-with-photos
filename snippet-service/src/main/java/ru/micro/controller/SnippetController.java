@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -15,9 +17,11 @@ import ru.micro.entities.SnippetCreation;
 import ru.micro.entities.SnippetResponse;
 import ru.micro.model.Dto;
 import ru.micro.services.SnippetService;
+import ru.micro.util.ErrorResponse;
 import ru.micro.util.NotValidException;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +43,7 @@ public class SnippetController {
             snippetService.createAndSaveSnippet(snippet);
         }
         catch (IOException e) {
-            throw new NotValidException(e.getMessage());
+            throw new NotValidException(snippet.getLink());
         }
     }
 
@@ -56,16 +60,20 @@ public class SnippetController {
         }
     }
 
-    @PutMapping("/{id}")
-    public void update(
-            @PathVariable int id,
-            @RequestParam Dto dto
-    ) {
-
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(DataIntegrityViolationException ex) {
+        ErrorResponse response = new ErrorResponse(
+                ex.getMessage().substring(ex.getMessage().indexOf("ERROR:"), ex.getMessage().indexOf("Detail:")),
+                new Date(System.currentTimeMillis())
+        );
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    @DeleteMapping("/{id}")
-    public void deleteDyId(@PathVariable int id) {
-
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(NotValidException exception) {
+        ErrorResponse response = new ErrorResponse(
+                exception.getMessage(),
+                new Date(System.currentTimeMillis())
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
