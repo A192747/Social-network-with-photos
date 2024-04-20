@@ -7,10 +7,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.micro.dao.SnippetDAO;
-import ru.micro.entities.SnippetCreation;
-import ru.micro.entities.SnippetResponse;
-import ru.micro.entities.SnippetVO;
+import ru.micro.DAO.SnippetDAO;
+import ru.micro.DTO.SnippetCreation;
+import ru.micro.DTO.SnippetResponse;
+import ru.micro.entities.Snippet;
 
 import java.io.IOException;
 
@@ -20,8 +20,8 @@ public class SnippetService {
     //Add relation to posts database when it's ready. Should provide id of the created snippet to the post
     private final RestTemplate restTemplate;
     private final SnippetDAO snippetDAO;
-    public void createAndSaveSnippet(SnippetCreation snippet) throws IOException {
-        Document document = Jsoup.connect(snippet.getLink()).timeout(60000).get();
+    public void createAndSaveSnippet(SnippetCreation snippetCreation) throws IOException {
+        Document document = Jsoup.connect(snippetCreation.getLink()).timeout(60000).get();
         Elements elements = document.select("link[rel=\"icon\"]");
         String faviconPath;
         String emptyIconPicturePath = "https://cdn1.iconfinder.com/data/icons/iconoir-vol-2/24/empty-page-1024.png";
@@ -73,22 +73,23 @@ public class SnippetService {
         if (previewText.isEmpty())
             previewText = "Some interesting stuff";
 
-        SnippetVO snippetVO = new SnippetVO();
-        snippetVO.setFavicon(faviconPath);
-        snippetVO.setTitle(titleText);
-        snippetVO.setTextPreview(previewText);
-        snippetVO.setLink(snippet.getLink());
+        Snippet snippet = new Snippet();
+        snippet.setId(snippetCreation.getPostId());
+        snippet.setFavicon(faviconPath);
+        snippet.setTitle(titleText);
+        snippet.setTextPreview(previewText);
+        snippet.setLink(snippetCreation.getLink());
 
-        snippetDAO.save(snippetVO);
+        snippetDAO.save(snippet);
     }
 
     public SnippetResponse get(int id) {
-        SnippetVO snippetVO = snippetDAO.get(id);
+        Snippet snippet = snippetDAO.get(id);
         return new SnippetResponse(
-                snippetVO.getFavicon(),
-                snippetVO.getTitle(),
-                snippetVO.getTextPreview(),
-                snippetVO.getLink()
+                snippet.getFavicon(),
+                snippet.getTitle(),
+                snippet.getTextPreview(),
+                snippet.getLink()
         );
     }
 }

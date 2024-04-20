@@ -1,4 +1,4 @@
-package ru.micro.entities;
+package ru.micro.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SnippetCreation {
-    private int postId;
+public class SnippetResponse {
+    private String faviconPath;
+    private String title;
+    private String textPreview;
     private String link;
 }

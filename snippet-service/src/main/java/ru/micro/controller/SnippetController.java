@@ -4,18 +4,14 @@ package ru.micro.controller;
 //import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import ru.micro.entities.SnippetCreation;
-import ru.micro.entities.SnippetResponse;
-import ru.micro.model.Dto;
+import ru.micro.DTO.SnippetCreation;
+import ru.micro.DTO.SnippetResponse;
 import ru.micro.services.SnippetService;
 import ru.micro.util.ErrorResponse;
 import ru.micro.util.NotValidException;
@@ -23,19 +19,18 @@ import ru.micro.util.NotValidException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
-@RequestMapping("/snippet")
+@RequestMapping("/snippets")
 @AllArgsConstructor
 public class SnippetController {
     private final SnippetService snippetService;
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<SnippetResponse> getSnippet(@PathVariable("id") int id) {
         return ResponseEntity.ok(snippetService.get(id));
     }
 
-    @PostMapping("/create-snippet")
+    @PostMapping()
     public void generate(@RequestBody @Valid SnippetCreation snippet,
                          BindingResult bindingResult){
         hasErrors(bindingResult);
