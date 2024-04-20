@@ -1,7 +1,5 @@
 package ru.micro.controller;
 
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
