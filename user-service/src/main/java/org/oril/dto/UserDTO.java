@@ -1,19 +1,18 @@
-package org.oril.entities;
+package org.oril.dto;
 
-import com.fasterxml.jackson.databind.annotation.EnumNaming;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class UserVO {
-
-    private int id;
+@Getter
+@Setter
+public class UserDTO {
     @NotNull
     @Size(min = 1)
     @NotEmpty(message = "Имя не может быть пустым!")
@@ -22,8 +21,4 @@ public class UserVO {
     @Size(min = 1)
     @NotEmpty(message = "Поле для пароля не может быть пустым!")
     private String password;
-    @NotNull
-    @NotEmpty(message = "Роль не может быть пустой!")
-    private Roles role;
 }
-

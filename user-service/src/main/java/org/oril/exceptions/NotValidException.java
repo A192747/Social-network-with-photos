@@ -1,4 +1,4 @@
-package org.oril.entities;
+package org.oril.exceptions;
 
 public class NotValidException extends RuntimeException{
     public NotValidException(String msg) {

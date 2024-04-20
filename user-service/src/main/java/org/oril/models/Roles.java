@@ -1,4 +1,4 @@
-package org.oril.entities;
+package org.oril.models;
 
 public enum Roles {
     USER,

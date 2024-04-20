@@ -2,13 +2,12 @@ package org.oril.dao;
 
 import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
-import org.oril.entities.AuthRequest;
-import org.oril.entities.NotValidException;
-import org.oril.entities.Roles;
+import org.oril.exceptions.NotValidException;
+import org.oril.models.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.oril.entities.UserVO;
+import org.oril.models.User;
 
 
 @Component
@@ -16,30 +15,26 @@ import org.oril.entities.UserVO;
 public class UserDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    public UserVO save(AuthRequest user) {
-        UserVO userVO = new UserVO();
-        userVO.setName(user.getName());
-        userVO.setPassword(user.getPassword());
-        userVO.setRole(Roles.USER);
+    public User save(User user) {
+        user.setRole(Roles.USER);
         jdbcTemplate.update("insert into users (password, name, role) VALUES (?,?,?)",
-                userVO.getPassword(),
-                userVO.getName(),
-                userVO.getRole().toString());
-        return userVO;
+                user.getPassword(),
+                user.getName(),
+                user.getRole().toString());
+        return user;
     }
-    public UserVO login(AuthRequest userVO) {
+    public User login(User user) {
         String passwordHash = jdbcTemplate.queryForObject(
                 "select password from users where name=? limit 1",
-                new Object[]{userVO.getName()},
+                new Object[]{user.getName()},
                 String.class);
-        if (BCrypt.checkpw(userVO.getPassword(), passwordHash)) {
-            UserVO user = jdbcTemplate.queryForObject(
+        if (BCrypt.checkpw(user.getPassword(), passwordHash)) {
+            User fullUser = jdbcTemplate.queryForObject(
                     "select * from users where name=? limit 1",
-                    new Object[]{userVO.getName()},
+                    new Object[]{user.getName()},
                     new UserRowMapper());
-            return user;
+            return fullUser;
         }
-
         throw new NotValidException("Не верный логин или пароль!");
     }
 

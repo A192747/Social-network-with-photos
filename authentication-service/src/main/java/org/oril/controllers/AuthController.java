@@ -2,9 +2,8 @@ package org.oril.controllers;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.oril.entities.AuthRequest;
+import org.oril.dto.UserDTO;
 import org.oril.entities.AuthResponse;
-import org.oril.entities.UserVO;
 import org.oril.services.AuthService;
 import org.oril.util.ErrorResponse;
 import org.oril.util.NotValidException;
@@ -26,7 +25,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(value = "/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody @Valid AuthRequest request,
+    public ResponseEntity<AuthResponse> register(@RequestBody @Valid UserDTO request,
                                                  BindingResult bindingResult) {
         hasErrors(bindingResult);
         AuthResponse user = authService.register(request);
@@ -36,7 +35,7 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
     @PostMapping(value = "/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest request,
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid UserDTO request,
                                               BindingResult bindingResult) {
         hasErrors(bindingResult);
         AuthResponse user = authService.login(request);

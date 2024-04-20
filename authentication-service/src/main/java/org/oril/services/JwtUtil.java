@@ -34,8 +34,8 @@ public class JwtUtil {
         return getClaims(token).getExpiration();
     }
 
-    public String generate(String name, String role, String tokenType) {
-        Map<String, String> claims = Map.of("name", name, "role", role);
+    public String generate(int id, String name, String role, String tokenType) {
+        Map<String, String> claims = Map.of("id", String.valueOf(id), "name", name, "role", role);
         long expMillis = "ACCESS".equalsIgnoreCase(tokenType)
                 ? Long.parseLong(expiration) * 1000
                 : Long.parseLong(expiration) * 1000 * 5;
@@ -45,7 +45,7 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(claims.get("name"))
+                .setSubject(claims.get("id"))
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .signWith(key)
