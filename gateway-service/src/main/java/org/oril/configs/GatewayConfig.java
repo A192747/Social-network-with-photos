@@ -23,6 +23,12 @@ public class GatewayConfig {
                 .route("auth-service", r -> r.path("/auth/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://auth-service"))
+                .route("forum-service", r -> r.path("/topic/**", "/message/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://forum-service"))
+                .route("snippet-service", r -> r.path("/snippets/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://snippet-service"))
                 // Add more routes here based on the configuration in application.yml
                 .build();
     }

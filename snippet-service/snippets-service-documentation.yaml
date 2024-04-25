@@ -1,0 +1,60 @@
+openapi: "3.0.3"
+info:
+  title: "Social_network_with_photos API"
+  description: "Social_network_with_photos API"
+  version: "1.0.0"
+servers:
+  - url: "https://Social_network_with_photos"
+paths:
+  /snippets/{id}:
+    get:
+      summary: "Получить сниппет"
+      operationId: "getSnippet"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SnippetResponse"
+  /snippets:
+    post:
+      summary: "Загрузить сниппет"
+      operationId: "generate"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnippetCreation"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+components:
+  schemas:
+    SnippetResponse:
+      type: "object"
+      properties:
+        faviconPath:
+          type: "string"
+        title:
+          type: "string"
+        textPreview:
+          type: "string"
+        link:
+          type: "string"
+    SnippetCreation:
+      type: "object"
+      properties:
+        postId:
+          type: "integer"
+          format: "int32"
+        link:
+          type: "string"
