@@ -1,7 +1,6 @@
 openapi: "3.0.3"
 info:
-  title: "Social_network_with_photos API"
-  description: "Social_network_with_photos API"
+  title: "Сервис сниппетов"
   version: "1.0.0"
 servers:
   - url: "https://Social_network_with_photos"

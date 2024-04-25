@@ -1,0 +1,57 @@
+openapi: "3.0.3"
+info:
+  title: "Сервис авторизации пользователя"
+  version: "1.0.0"
+servers:
+  - url: "https://Social_network_with_photos"
+paths:
+  /auth/register:
+    post:
+      summary: "Регистрация пользователя"
+      operationId: "register"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+  /auth/login:
+    post:
+      summary: "Логин пользователя"
+      operationId: "login"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+components:
+  schemas:
+    UserDTO:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        password:
+          type: "string"
+    AuthResponse:
+      type: "object"
+      properties:
+        accessToken:
+          type: "string"
+        refreshToken:
+          type: "string"
