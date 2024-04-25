@@ -4,4 +4,8 @@ server:
 spring:
   application:
     name: photo-upload-service
+  servlet:
+    multipart:
+      max-file-size: 4MB
+      max-request-size: 4MB
 

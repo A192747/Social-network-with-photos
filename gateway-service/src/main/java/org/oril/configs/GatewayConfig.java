@@ -29,6 +29,9 @@ public class GatewayConfig {
                 .route("snippet-service", r -> r.path("/snippets/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://snippet-service"))
+                .route("photo-upload-service", r -> r.path("/posts/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://photo-upload-service"))
                 // Add more routes here based on the configuration in application.yml
                 .build();
     }

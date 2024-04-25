@@ -1,0 +1,83 @@
+openapi: "3.0.3"
+info:
+  title: "Сервис загрузки фото"
+  version: "1.0.0"
+servers:
+  - url: "https://localhost:8765"
+paths:
+  /posts/{postId}/photos/{photoId}:
+    post:
+      summary: "Загрузить фото"
+      operationId: "upload"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "photoId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "photo"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+            format: "binary"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PhotoUploadResponse"
+    get:
+      summary: Получить фото
+      operationId: "getPhoto"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "photoId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ByteArrayResource"
+components:
+  schemas:
+    PhotoUploadResponse:
+      type: "object"
+      properties:
+        photoName:
+          type: "string"
+        timestamp:
+          type: "string"
+          format: "date-time"
+    ByteArrayResource:
+      type: "object"
+      properties:
+        byteArray:
+          type: "array"
+          items:
+            type: "string"
+            format: "byte"
+        description:
+          type: "string"
+      required:
+        - "byteArray"
+        - "description"
