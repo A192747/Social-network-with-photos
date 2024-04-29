@@ -7,12 +7,14 @@ import ru.micro.entities.Snippet;
 import ru.micro.repository.SnippetRepository;
 import ru.micro.util.NotValidException;
 
+import java.util.UUID;
+
 @Component
 @AllArgsConstructor
 public class SnippetDAO {
     @Autowired
     SnippetRepository snippetRepository;
-    public int save(Snippet snippet) {
+    public UUID save(Snippet snippet) {
         snippetRepository.insert(snippet);
         return snippet.getId();
     }

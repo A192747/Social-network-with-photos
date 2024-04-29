@@ -7,17 +7,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SnippetCreation {
-    @NotNull
-    private UUID postId;
-
+public class PostUploadHeaders {
+    @NotNull()
+    private int id;
     @NotNull
     @Size(min = 1)
-    @NotEmpty(message = "Ссылка на сайт для сниппета оказалась пустой!")
-    private String link;
+    @NotEmpty(message = "Имя пользователя не может быть пустым!")
+    private String name;
+    @NotNull
+    @Size(min = 1)
+    @NotEmpty(message = "Роль пользователя не может быть пустой!")
+    private String role;
 }

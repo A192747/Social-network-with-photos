@@ -7,17 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SnippetCreation {
+public class PostUploadObject {
     @NotNull
-    private UUID postId;
+    private String text;
 
     @NotNull
-    @Size(min = 1)
-    @NotEmpty(message = "Ссылка на сайт для сниппета оказалась пустой!")
-    private String link;
+    private int imagesAmount;
 }

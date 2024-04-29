@@ -1,0 +1,26 @@
+#For cassandra in cqlsh
+CREATE KEYSPACE socialNetworkKeyspace WITH replication = {
+    'class': 'SimpleStrategy',
+    'replication_factor': 3
+};
+
+USE socialNetworkKeyspace;
+
+CREATE TABLE snippets (
+    id UUID PRIMARY KEY,
+    favicon VARCHAR,
+    title VARCHAR,
+    text_preview VARCHAR,
+	link VARCHAR
+);
+
+CREATE TABLE posts (
+    id UUID PRIMARY KEY,
+    user_id VARCHAR,
+    text VARCHAR,
+    color_preload set<VARCHAR>,
+    images_amount INT,
+    likes_counter INT,
+    snippet_state INT,
+    post_is_ready BOOLEAN
+);

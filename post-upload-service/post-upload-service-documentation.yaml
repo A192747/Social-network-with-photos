@@ -1,0 +1,64 @@
+openapi: "3.0.3"
+info:
+  title: "Post upload microservice"
+  description: "Creates rows in the database and says to create snippet"
+  version: "1.0.0"
+servers:
+  - url: "https://Social_network_with_photos"
+paths:
+  /posts:
+    post:
+      summary: "Creates new post in the database and snippet if link is present"
+      operationId: "generate"
+      parameters:
+        - name: "id"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostUploadObject"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+  /posts/{id}:
+    get:
+      summary: "Temporary decision. (Maybe) Will be removed when recomendations are created"
+      operationId: "getSnippet"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostGetResponse"
+components:
+  schemas:
+    PostUploadObject:
+      type: "object"
+      properties:
+        text:
+          type: "string"
+        imagesAmount:
+          type: "integer"
+          format: "int32"
+    PostGetResponse:
+      type: "object"
+      properties:
+        text:
+          type: "string"
+        colorPreload:
+          type: "array"
+          items:
+            type: "string"
