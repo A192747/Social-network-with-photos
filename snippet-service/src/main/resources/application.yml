@@ -6,7 +6,7 @@ spring:
     name: snippet-service
   cassandra:
     port: 9042
-    contact-points: snippetDatabase
-    keyspace-name: snippetsKeyspace
+    contact-points: socialNetworkDatabase
+    keyspace-name: socialNetworkKeyspace
     entity-base-package: ru.micro.DAO
 

@@ -8,13 +8,16 @@ import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
+import java.util.UUID;
+
 @Table("snippets")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Snippet {
     @PrimaryKey
-    private int id;
+    @Column("id")
+    private UUID id;
     @NotNull
     @Size(min = 1)
     @NotEmpty(message = "Картинка должна существовать!")

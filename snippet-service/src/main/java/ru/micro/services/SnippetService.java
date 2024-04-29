@@ -7,18 +7,20 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.micro.DAO.PostDAO;
 import ru.micro.DAO.SnippetDAO;
 import ru.micro.DTO.SnippetCreation;
 import ru.micro.DTO.SnippetResponse;
+import ru.micro.entities.Post;
 import ru.micro.entities.Snippet;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class SnippetService {
-    //Add relation to posts database when it's ready. Should provide id of the created snippet to the post
-    private final RestTemplate restTemplate;
+    private final PostDAO postDAO;
     private final SnippetDAO snippetDAO;
     public void createAndSaveSnippet(SnippetCreation snippetCreation) throws IOException {
         Document document = Jsoup.connect(snippetCreation.getLink()).timeout(60000).get();
@@ -81,6 +83,20 @@ public class SnippetService {
         snippet.setLink(snippetCreation.getLink());
 
         snippetDAO.save(snippet);
+        Post temp = postDAO.get(snippet.getId());
+        temp.setSnippetState(1);
+        postDAO.save(temp);
+        checkPostReadiness(snippet.getId());
+    }
+
+    private void checkPostReadiness(UUID postId) {
+        Post post = postDAO.get(postId);
+        boolean isReady = post.getColorPreload() == null || post.getColorPreload().size() == post.getImagesAmount();
+        isReady = isReady && post.getSnippetState() == 1;
+        if (isReady) {
+            post.setPostIsReady(true);
+            postDAO.save(post);
+        }
     }
 
     public SnippetResponse get(int id) {
