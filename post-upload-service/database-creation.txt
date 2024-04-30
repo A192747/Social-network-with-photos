@@ -18,7 +18,7 @@ CREATE TABLE posts (
     id UUID PRIMARY KEY,
     user_id VARCHAR,
     text VARCHAR,
-    color_preload set<VARCHAR>,
+    color_preload list<VARCHAR>,
     images_amount INT,
     likes_counter INT,
     snippet_state INT,

@@ -7,6 +7,7 @@ import org.oril.dao.UserDAO;
 import org.oril.dto.UserDTO;
 import org.oril.models.User;
 import org.oril.exceptions.NotValidException;
+import org.oril.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -20,37 +21,19 @@ import java.util.Date;
 @RequestMapping(value = "/users")
 @AllArgsConstructor
 public class UserController {
+
     @Autowired
-    private final UserDAO userDAO;
-    @Autowired
-    public final ModelMapper modelMapper;
+    private UserService service;
 
     @PostMapping("/register")
     public ResponseEntity<User> save(@RequestBody UserDTO user) {
-        return ResponseEntity.ok(userDAO.save(convertToUser(user)));
+        return ResponseEntity.ok(service.save(user));
     }
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody UserDTO user) {
-        return ResponseEntity.ok(userDAO.login(convertToUser(user)));
-    }
-    private User convertToUser(UserDTO user) {
-        return modelMapper.map(user, User.class);
+        return ResponseEntity.ok(service.login(user));
     }
 
-    @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handleException(DataIntegrityViolationException ex) {
-        ErrorResponse response = new ErrorResponse(
-                ex.getMessage().substring(ex.getMessage().indexOf("ERROR:"), ex.getMessage().indexOf("Detail:")),
-                new Date(System.currentTimeMillis())
-        );
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handleException(NotValidException exception) {
-        ErrorResponse response = new ErrorResponse(
-                exception.getMessage(),
-                new Date(System.currentTimeMillis())
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+
+
 }

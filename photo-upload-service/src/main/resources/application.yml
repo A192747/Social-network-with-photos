@@ -8,4 +8,8 @@ spring:
     multipart:
       max-file-size: 4MB
       max-request-size: 4MB
-
+  cassandra:
+    port: 9042
+    contact-points: socialNetworkDatabase
+    keyspace-name: socialNetworkKeyspace
+    entity-base-package: ru.micro.DAO

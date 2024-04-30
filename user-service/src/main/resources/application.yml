@@ -5,6 +5,12 @@ spring:
   application:
     name: user-service
 
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: neoneoneo
+
 jwt:
   secret: MySecretCodeThatIsLongerThanBefore
 

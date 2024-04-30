@@ -91,8 +91,9 @@ public class SnippetService {
 
     private void checkPostReadiness(UUID postId) {
         Post post = postDAO.get(postId);
-        boolean isReady = post.getColorPreload() == null || post.getColorPreload().size() == post.getImagesAmount();
-        isReady = isReady && post.getSnippetState() == 1;
+        boolean isReady = (post.getImagesAmount() == 0 && post.getColorPreload() == null)
+                || (post.getColorPreload() != null && post.getColorPreload().size() == post.getImagesAmount());
+        isReady = isReady && (Math.abs(post.getSnippetState()) == 1);
         if (isReady) {
             post.setPostIsReady(true);
             postDAO.save(post);

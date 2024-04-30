@@ -1,7 +1,6 @@
 package ru.micro.controller;
 
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +8,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.micro.DTO.PostGetResponse;
+import ru.micro.DTO.PostIdResponse;
 import ru.micro.DTO.PostUploadHeaders;
 import ru.micro.DTO.PostUploadObject;
-import ru.micro.model.Dto;
+
 import ru.micro.services.PostUploadService;
 import ru.micro.util.NotValidException;
 
@@ -25,12 +25,11 @@ import java.util.UUID;
 public class PostUploadController {
     private final PostUploadService postService;
     @PostMapping()
-    public void generate(@RequestHeader("id") String id,
-                         @RequestBody @Valid PostUploadObject post,
-                         BindingResult bindingResult){
+    public ResponseEntity<PostIdResponse> generate(@RequestHeader("id") String id,
+                                                   @RequestBody @Valid PostUploadObject post,
+                                                   BindingResult bindingResult){
         hasErrors(bindingResult);
-
-        postService.createAndSavePost(post, id);
+        return ResponseEntity.ok(new PostIdResponse(postService.createAndSavePost(post, id)));
     }
 
     @GetMapping("/{id}")

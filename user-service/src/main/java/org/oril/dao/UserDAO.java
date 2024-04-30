@@ -21,6 +21,10 @@ public class UserDAO {
                 user.getPassword(),
                 user.getName(),
                 user.getRole().toString());
+        user.setId(jdbcTemplate.queryForObject(
+                "select id from users where name=? limit 1",
+                new Object[]{user.getName()},
+                Integer.class));
         return user;
     }
     public User login(User user) {
@@ -35,7 +39,7 @@ public class UserDAO {
                     new UserRowMapper());
             return fullUser;
         }
-        throw new NotValidException("Не верный логин или пароль!");
+        throw new NotValidException("Неверный логин или пароль!");
     }
 
 

@@ -1,4 +1,4 @@
-package org.oril.util;
+package org.oril.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

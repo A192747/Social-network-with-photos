@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  title: "Post upload microservice"
+  title: "Сервис загрузки поста"
   description: "Creates rows in the database and says to create snippet"
   version: "1.0.0"
 servers:
@@ -25,6 +25,10 @@ paths:
       responses:
         "200":
           description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostIdResponse"
   /posts/{id}:
     get:
       summary: "Temporary decision. (Maybe) Will be removed when recomendations are created"
@@ -53,6 +57,12 @@ components:
         imagesAmount:
           type: "integer"
           format: "int32"
+    PostIdResponse:
+      type: "object"
+      properties:
+        postID:
+          type: "string"
+          format: "uuid"
     PostGetResponse:
       type: "object"
       properties:

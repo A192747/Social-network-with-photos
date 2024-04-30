@@ -3,7 +3,7 @@ info:
   title: "Сервис загрузки фото"
   version: "1.0.0"
 servers:
-  - url: "https://localhost:8765"
+  - url: "https://Social_network_with_photos"
 paths:
   /posts/{postId}/photos/{photoId}:
     post:
@@ -14,8 +14,8 @@ paths:
           in: "path"
           required: true
           schema:
-            type: "integer"
-            format: "int32"
+            type: "string"
+            format: "uuid"
         - name: "photoId"
           in: "path"
           required: true
@@ -36,15 +36,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/PhotoUploadResponse"
     get:
-      summary: Получить фото
+      summary: "Получить фото"
       operationId: "getPhoto"
       parameters:
         - name: "postId"
           in: "path"
           required: true
           schema:
-            type: "integer"
-            format: "int32"
+            type: "string"
+            format: "uuid"
         - name: "photoId"
           in: "path"
           required: true

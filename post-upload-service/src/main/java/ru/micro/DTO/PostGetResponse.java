@@ -16,5 +16,5 @@ public class PostGetResponse {
     private String text;
 
     @NotNull
-    private Set<String> colorPreload;
+    private List<String> colorPreload;
 }

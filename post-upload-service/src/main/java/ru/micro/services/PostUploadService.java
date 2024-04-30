@@ -20,13 +20,13 @@ import java.util.regex.Pattern;
 public class PostUploadService {
     private final RestTemplate restTemplate;
     private final PostDAO postDAO;
-    public void createAndSavePost(PostUploadObject object, String id) {
+    public UUID createAndSavePost(PostUploadObject object, String id) {
         Post post = new Post();
         post.setId(UUID.randomUUID());
         post.setUserId(id);
         post.setText(object.getText());
         post.setImagesAmount(object.getImagesAmount());
-        post.setColorPreload(new HashSet<>());
+        post.setColorPreload(null);
         post.setPostIsReady(false);
         post.setLikesCounter(0);
 
@@ -48,12 +48,14 @@ public class PostUploadService {
         }
 
         checkPostReadiness(postID);
+        return postID;
     }
 
     private void checkPostReadiness(UUID postId) {
         Post post = postDAO.get(postId);
-        boolean isReady = post.getColorPreload() == null || post.getColorPreload().size() == post.getImagesAmount();
-        isReady = isReady && (post.getSnippetState() == 1 || post.getSnippetState() == -1);
+        boolean isReady = (post.getImagesAmount() == 0 && post.getColorPreload() == null)
+                || (post.getColorPreload() != null && post.getColorPreload().size() == post.getImagesAmount());
+        isReady = isReady && (Math.abs(post.getSnippetState()) == 1);
         if (isReady) {
             post.setPostIsReady(true);
             postDAO.save(post);

@@ -1,0 +1,118 @@
+openapi: "3.0.3"
+info:
+  title: "Сервис поиска и добавления в друзья"
+  version: "1.0.0"
+servers:
+  - url: "https://Social_network_with_photos"
+paths:
+  /users/followers:
+    get:
+      summary: "Получить подписчиков человека"
+      operationId: "getFollowers"
+      parameters:
+        - name: "id"
+          in: "header"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+  /users/following:
+    get:
+      summary: "Получить подписки человека"
+      operationId: "getFollowing"
+      parameters:
+        - name: "id"
+          in: "header"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+  /users/search:
+    get:
+      summary: "Поиск пользователя по имени"
+      operationId: "searchUsersByName"
+      parameters:
+        - name: "name"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+  /users/{followerId}/follow:
+    post:
+      summary: "Подписаться на человека"
+      operationId: "followToFollowId"
+      parameters:
+        - name: "followerId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "id"
+          in: "header"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+    delete:
+      summary: "Отписаться от человека"
+      operationId: "unFollow"
+      parameters:
+        - name: "followerId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "id"
+          in: "header"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+components:
+  schemas:
+    UserResponse:
+      type: "object"
+      properties:
+        userId:
+          type: "integer"
+          format: "int32"
+        name:
+          type: "string"
+        countOfFollowers:
+          type: "integer"
+          format: "int32"

@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import org.oril.dto.UserDTO;
 import org.oril.entities.AuthResponse;
 import org.oril.services.AuthService;
-import org.oril.util.ErrorResponse;
-import org.oril.util.NotValidException;
-import org.oril.util.UnAuthException;
+import org.oril.exceptions.ErrorResponse;
+import org.oril.exceptions.NotValidException;
+import org.oril.exceptions.UnAuthException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -40,7 +40,7 @@ public class AuthController {
         hasErrors(bindingResult);
         AuthResponse user = authService.login(request);
         if (user.equals(new AuthResponse())) {
-            throw new UnAuthException("Не верный логин или пароль!");
+            throw new UnAuthException("Неверный логин или пароль!");
         }
         return ResponseEntity.ok(user);
 
@@ -57,20 +57,5 @@ public class AuthController {
             throw new NotValidException(errorMsg.toString());
         }
     }
-    @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handleException(UnAuthException exception) {
-        ErrorResponse response = new ErrorResponse(
-                exception.getMessage(),
-                new Date(System.currentTimeMillis())
-        );
-        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-    }
-    @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handleException(NotValidException exception) {
-        ErrorResponse response = new ErrorResponse(
-                exception.getMessage(),
-                new Date(System.currentTimeMillis())
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+
 }

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/posts")
@@ -24,15 +25,15 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping("/{postId}/photos/{photoId}")
-    public ResponseEntity<PhotoUploadResponse> upload(@PathVariable("postId") int postId,
+    public ResponseEntity<PhotoUploadResponse> upload(@PathVariable("postId") UUID postId,
                                                       @PathVariable("photoId") int photoId,
                                                       @RequestParam("photo") MultipartFile file) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        InputStream in = new ByteArrayInputStream(file.getBytes());
-        return ResponseEntity.ok(fileService.save(postId, photoId, in));
+
+        return ResponseEntity.ok(fileService.save(postId, photoId, file));
     }
 
     @GetMapping("/{postId}/photos/{photoId}")
-    public ResponseEntity<ByteArrayResource> getPhoto(@PathVariable("postId") int postId,
+    public ResponseEntity<ByteArrayResource> getPhoto(@PathVariable("postId") UUID postId,
                                                       @PathVariable("photoId") int photoId) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         ByteArrayResource photo = fileService.getPhoto(postId, photoId);
         return ResponseEntity.ok()
