@@ -44,15 +44,15 @@ public class FileService {
         if (photoId < 0)
             throw new IllegalArgumentException("Значение photoId не должны быть отрицательными!");
         String fileName = "post-" + postId + "-photo-" + photoId + ".jpg";
-        String hex = ImageAverageColor.getAverageColorHex(inputStreamCopy);
         Post post = postDAO.get(postId);
         List<String> colors = post.getColorPreload();
-        if (colors.size() == post.getColorPreload().size())
-            throw new NotValidException("Все фото уже подгружены!");
         if (colors == null) {
             colors = new ArrayList<>();
             post.setColorPreload(colors);
         }
+        if (colors.size() == post.getImagesAmount())
+            throw new NotValidException("Все фото уже подгружены!");
+        String hex = ImageAverageColor.getAverageColorHex(inputStreamCopy);
         post.getColorPreload().add(hex);
         postDAO.save(post);
         minioClient.putObject(PutObjectArgs.builder().bucket(bucketName).object(fileName)
