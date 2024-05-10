@@ -1,4 +1,4 @@
-package ru.micro.util;
+package ru.micro.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

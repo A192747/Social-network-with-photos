@@ -7,17 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import ru.micro.DTO.PostGetResponse;
 import ru.micro.DTO.PostIdResponse;
-import ru.micro.DTO.PostUploadHeaders;
 import ru.micro.DTO.PostUploadObject;
 
 import ru.micro.services.PostUploadService;
-import ru.micro.util.NotValidException;
+import ru.micro.exceptions.NotValidException;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/posts")
@@ -25,17 +21,13 @@ import java.util.UUID;
 public class PostUploadController {
     private final PostUploadService postService;
     @PostMapping()
-    public ResponseEntity<PostIdResponse> generate(@RequestHeader("id") String id,
+    public ResponseEntity<PostIdResponse> generate(@RequestHeader("id") int id,
                                                    @RequestBody @Valid PostUploadObject post,
                                                    BindingResult bindingResult){
         hasErrors(bindingResult);
         return ResponseEntity.ok(new PostIdResponse(postService.createAndSavePost(post, id)));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PostGetResponse> getSnippet(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok(postService.get(id));
-    }
 
     private void hasErrors(BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {

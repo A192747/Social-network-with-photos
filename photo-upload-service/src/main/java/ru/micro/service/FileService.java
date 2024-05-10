@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ru.micro.DAO.PostDAO;
 import ru.micro.dto.PhotoUploadResponse;
 import ru.micro.entities.Post;
 import ru.micro.exceptions.NotValidException;
@@ -25,26 +25,22 @@ import java.util.*;
 @Service
 public class FileService {
 
-    public FileService() {
-
-    }
-
     @Autowired
     private MinioClient minioClient;
 
     @Autowired
-    private PostDAO postDAO;
-
+    private PostRepository postRepository;
     @Value("${minio.bucket-name}")
     private String bucketName;
 
+    @Transactional
     public PhotoUploadResponse save(UUID postId, int photoId, MultipartFile file) throws IllegalArgumentException, ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         InputStream inputStream = new ByteArrayInputStream(file.getBytes());
         InputStream inputStreamCopy = new ByteArrayInputStream(file.getBytes());
         if (photoId < 0)
             throw new IllegalArgumentException("Значение photoId не должны быть отрицательными!");
         String fileName = "post-" + postId + "-photo-" + photoId + ".jpg";
-        Post post = postDAO.get(postId);
+        Post post = postRepository.findById(postId).orElseThrow(() -> new NotValidException("Такой пост не существует!"));
         List<String> colors = post.getColorPreload();
         if (colors == null) {
             colors = new ArrayList<>();
@@ -54,7 +50,7 @@ public class FileService {
             throw new NotValidException("Все фото уже подгружены!");
         String hex = ImageAverageColor.getAverageColorHex(inputStreamCopy);
         post.getColorPreload().add(hex);
-        postDAO.save(post);
+        postRepository.save(post);
         minioClient.putObject(PutObjectArgs.builder().bucket(bucketName).object(fileName)
                 .stream(inputStream, -1, 10485760).build());
         System.out.println(inputStream);
@@ -71,13 +67,13 @@ public class FileService {
     }
 
     private void checkPostReadiness(UUID postId) {
-        Post post = postDAO.get(postId);
+        Post post = postRepository.findById(postId).orElseThrow(() -> new NotValidException("Такой пост не существует!"));
         boolean isReady = (post.getImagesAmount() == 0 && post.getColorPreload() == null)
                 || (post.getColorPreload() != null && post.getColorPreload().size() == post.getImagesAmount());
         isReady = isReady && (Math.abs(post.getSnippetState()) == 1);
         if (isReady) {
             post.setPostIsReady(true);
-            postDAO.save(post);
+            postRepository.save(post);
         }
     }
 

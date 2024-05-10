@@ -16,11 +16,20 @@ CREATE TABLE snippets (
 
 CREATE TABLE posts (
     id UUID PRIMARY KEY,
-    user_id VARCHAR,
+    user_id INT,
     text VARCHAR,
     color_preload list<VARCHAR>,
+    created_at timestamp,
     images_amount INT,
     likes_counter INT,
     snippet_state INT,
     post_is_ready BOOLEAN
+);
+
+CREATE TABLE recommendations (
+    id UUID PRIMARY KEY,
+    user_id INT,
+    posts_ids set<UUID>,
+    new_posts_ids set<UUID>,
+    recommend_taken_count INT
 );

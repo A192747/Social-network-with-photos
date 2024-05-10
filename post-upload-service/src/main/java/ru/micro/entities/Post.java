@@ -10,8 +10,8 @@ import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
+import java.sql.Timestamp;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Table("posts")
@@ -25,12 +25,18 @@ public class Post {
 
     @Column("user_id")
     @NotNull
-    private String userId;
+    private Integer userId;
 
+    @Column("text")
     @NotNull
     @Size(min = 1)
     @NotEmpty(message = "Текст не может быть пустым!")
     private String text;
+
+    @Column("created_at")
+    @NotNull
+    @NotEmpty(message = "Дата должна быть указана")
+    private Timestamp createdAt;
 
     @Column("color_preload")
     @NotNull

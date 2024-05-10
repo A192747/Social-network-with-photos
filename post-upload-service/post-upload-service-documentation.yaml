@@ -10,12 +10,6 @@ paths:
     post:
       summary: "Creates new post in the database and snippet if link is present"
       operationId: "generate"
-      parameters:
-        - name: "id"
-          in: "header"
-          required: true
-          schema:
-            type: "string"
       requestBody:
         content:
           application/json:
@@ -29,24 +23,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/PostIdResponse"
-  /posts/{id}:
-    get:
-      summary: "Temporary decision. (Maybe) Will be removed when recomendations are created"
-      operationId: "getSnippet"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            type: "string"
-            format: "uuid"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/PostGetResponse"
 components:
   schemas:
     PostUploadObject:

@@ -11,15 +11,15 @@
     <modules>
         <module>discovery-service</module>
         <module>config-service</module>
-        <module>authentication-service</module>
+        <module>recommendation-service</module>
         <module>user-service</module>
+        <module>authentication-service</module>
         <module>snippet-service</module>
+        <module>photo-upload-service</module>
         <module>comments-likes-service</module>
         <module>post-upload-service</module>
-        <module>photo-upload-service</module>
         <module>friend-service</module>
         <module>friend-post-service</module>
-        <module>recommendation-service</module>
         <module>gateway-service</module>
     </modules>
 

@@ -45,6 +45,7 @@
 * user-service - Сервис для сохранения пользователей в бд; логин пользователя (сопоставление хэша пароля с захэшированным паролем в бд)
 * [snippet-service](https://github.com/A192747/Social-network-with-photos/blob/main/snippet-service/snippets-service-documentation.yaml) - Сервис подгрузки сниппета в бд
 * [post-upload-service](https://github.com/A192747/Social-network-with-photos/blob/main/post-upload-service/post-upload-service-documentation.yaml) - Сервис загрузки поста в бд
+* [recommendation-service](https://github.com/A192747/Social-network-with-photos/blob/main/recommendation-service/recommendation-service-documentation.yaml) - Сервис генерации ленты рекомендаций (отдает пользователю ленту постов)
 * [photo-upload-service](https://github.com/A192747/Social-network-with-photos/blob/main/photo-upload-service/photo-upload-service-documentation.yaml) - Сервис загрузки фото из поста в бд и из неё, определяет средний цвет фото и сохраняет его в бд постов, чтобы было превью
 * [friend-service](https://github.com/A192747/Social-network-with-photos/blob/main/friend-service/friend-service-documentation.yaml) - Сервис по подписке и отписке от пользователей. Создает связи между пользователями в графовой бд (Neo4j)
 * gateway-service - Api gateway, через который проходят все запросы. При этом проверяется accessToken на валидность и, чтобы в дальнейшем каждому из микросервисов не нужно было парсить токен заново, добавляет необходимые поля (name и role) к запросу
@@ -93,7 +94,7 @@ POST http://localhost:8765/auth/login
 }
 ```
 
-В дальнейшем пользователю нужно в Headers POST запроса отправлять свой access token <br/>
+В дальнейшем пользователю нужно в Headers запроса отправлять свой access token <br/>
 
 ```http request
 POST http://localhost:8765/*
