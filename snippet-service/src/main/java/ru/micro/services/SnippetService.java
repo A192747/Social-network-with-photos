@@ -6,13 +6,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import ru.micro.DAO.PostDAO;
-import ru.micro.DAO.SnippetDAO;
 import ru.micro.DTO.SnippetCreation;
 import ru.micro.DTO.SnippetResponse;
 import ru.micro.entities.Post;
 import ru.micro.entities.Snippet;
+import ru.micro.repository.PostRepository;
+import ru.micro.repository.SnippetRepository;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -20,8 +19,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class SnippetService {
-    private final PostDAO postDAO;
-    private final SnippetDAO snippetDAO;
+    private final PostRepository postRepository;
+    private final SnippetRepository snippetRepository;
     public void createAndSaveSnippet(SnippetCreation snippetCreation) throws IOException {
         Document document = Jsoup.connect(snippetCreation.getLink()).timeout(60000).get();
         Elements elements = document.select("link[rel=\"icon\"]");
@@ -82,26 +81,26 @@ public class SnippetService {
         snippet.setTextPreview(previewText);
         snippet.setLink(snippetCreation.getLink());
 
-        snippetDAO.save(snippet);
-        Post temp = postDAO.get(snippet.getId());
+        snippetRepository.save(snippet);
+        Post temp = postRepository.findById(snippet.getId()).get();
         temp.setSnippetState(1);
-        postDAO.save(temp);
+        postRepository.save(temp);
         checkPostReadiness(snippet.getId());
     }
 
     private void checkPostReadiness(UUID postId) {
-        Post post = postDAO.get(postId);
+        Post post = postRepository.findById(postId).get();
         boolean isReady = (post.getImagesAmount() == 0 && post.getColorPreload() == null)
                 || (post.getColorPreload() != null && post.getColorPreload().size() == post.getImagesAmount());
         isReady = isReady && (Math.abs(post.getSnippetState()) == 1);
         if (isReady) {
             post.setPostIsReady(true);
-            postDAO.save(post);
+            postRepository.save(post);
         }
     }
 
-    public SnippetResponse get(int id) {
-        Snippet snippet = snippetDAO.get(id);
+    public SnippetResponse get(UUID id) {
+        Snippet snippet = snippetRepository.findById(id).get();
         return new SnippetResponse(
                 snippet.getFavicon(),
                 snippet.getTitle(),
