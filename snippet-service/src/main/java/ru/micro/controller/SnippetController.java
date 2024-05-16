@@ -17,6 +17,7 @@ import ru.micro.util.NotValidException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/snippets")
@@ -24,7 +25,7 @@ import java.util.List;
 public class SnippetController {
     private final SnippetService snippetService;
     @GetMapping("/{id}")
-    public ResponseEntity<SnippetResponse> getSnippet(@PathVariable("id") int id) {
+    public ResponseEntity<SnippetResponse> getSnippet(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(snippetService.get(id));
     }
 
