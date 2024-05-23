@@ -30,23 +30,6 @@ public class UserService {
     public User save(UserDTO userDTO) {
         User user = userDAO.save(convertToUser(userDTO));
         userRepository.save(convertToUser(user));
-        //для только что зарегистрированного пользователя создадим рекомендации:
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("id", String.valueOf(user.getId()));
-            HttpEntity<Object> entity = new HttpEntity<>(null, headers); // Передаем null, так как тело запроса не требуется
-            restTemplate.exchange(
-                    "http://recommendation-service/posts/recommendations",
-                    HttpMethod.GET,
-                    entity,
-                    String.class
-            );
-        } catch (Exception ex) {
-            System.out.println("Не удалось создать рекомендации для пользователя " +
-                    new Date(System.currentTimeMillis()) + " " +
-                    ex.getMessage());
-            //skip
-        }
         return user;
     }
 

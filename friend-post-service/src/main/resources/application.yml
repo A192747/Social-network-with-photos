@@ -4,4 +4,12 @@ server:
 spring:
   application:
     name: friend-post-service
-
+  cassandra:
+    port: 9042
+    contact-points: socialNetworkDatabase
+    keyspace-name: socialNetworkKeyspace
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: neoneoneo
