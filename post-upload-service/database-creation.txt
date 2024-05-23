@@ -33,3 +33,11 @@ CREATE TABLE recommendations (
     new_posts_ids set<UUID>,
     recommend_taken_count INT
 );
+
+CREATE TABLE friendpost (
+    id UUID PRIMARY KEY,
+    user_id INT,
+    posts_ids set<UUID>,
+    new_posts_ids set<UUID>,
+    friend_post_taken_count INT
+);

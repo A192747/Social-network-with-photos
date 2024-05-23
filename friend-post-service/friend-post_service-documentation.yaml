@@ -1,0 +1,83 @@
+openapi: "3.0.3"
+info:
+  title: "Сервис генирации ленты друзей"
+  version: "1.0.0"
+servers:
+  - url: "https://Social_network_with_photos"
+paths:
+  /posts/friendpost:
+    get:
+      summary: "Получить ленту друзей"
+      operationId: "getFriendPost"
+      parameters:
+        - name: "id"
+          in: "header"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/FriendPostResponse"
+  /posts/{postId}:
+    put:
+      summary: "НЕ ДЛЯ ФРОНТЕНДА! Добавить пост в ленту друзей для пользователей НЕ ДЛЯ ФРОНТЕНДА!"
+      operationId: "updateFriendPostListForId"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "id"
+          in: "header"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+components:
+  schemas:
+    Timestamp:
+      type: "object"
+      properties:
+        nanos:
+          type: "integer"
+          format: "int32"
+    FriendPostResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        userId:
+          type: "integer"
+          format: "int32"
+        userName:
+          type: "string"
+        text:
+          type: "string"
+        date:
+          $ref: "#/components/schemas/Timestamp"
+        colorPreload:
+          type: "array"
+          items:
+            type: "string"
+        imagesAmount:
+          type: "integer"
+          format: "int32"
+        likesCounter:
+          type: "integer"
+          format: "int32"
+        snippetState:
+          type: "integer"
+          format: "int32"
