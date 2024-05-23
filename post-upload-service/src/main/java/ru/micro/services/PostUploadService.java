@@ -67,6 +67,17 @@ public class PostUploadService {
                     ex.getMessage());
         }
 
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("id", String.valueOf(id));
+            HttpEntity<Object> entity = new HttpEntity<>(null, headers); // Передаем null, так как тело запроса не требуется
+            restTemplate.put("http://friend-post-service/posts/" + postID, entity);
+        } catch (Exception ex) {
+            System.out.println(new Date(System.currentTimeMillis()) +
+                    " Не удалось обновить ленту друзей пользователей при добавлении поста " + postID + "\n" +
+                    ex.getMessage());
+        }
+
         checkPostReadiness(postID);
         return postID;
     }

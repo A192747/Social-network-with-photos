@@ -18,7 +18,7 @@ public class FriendPostController {
     @Autowired
     FriendlyPostService friendlyPostService;
 
-    @GetMapping("/friendpost")
+    @GetMapping("/friends")
     public List<FriendPostResponse> getFriendPost(@RequestHeader("id") int userId) {
         return convertToResponseList(friendlyPostService.getFriendPost(userId));
     }
