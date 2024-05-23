@@ -177,6 +177,8 @@ public class RecommendPostService {
         Collections.shuffle(recommendUsersList);
         Set<Integer> recommendUsersIdsList = new HashSet<>(recommendUsersList);
         recommendUsersIdsList.addAll(mostPopularUsersIds);
+        if(recommendUsersIdsList.contains(Integer.valueOf(userId)))
+            recommendUsersIdsList.remove(Integer.valueOf(userId));
         List<Post> post = null;
         Integer countOfRequests = rec.getRecommendTakenCount();
         Set<UUID> recommendedPosts = rec.getNewPostsIds();

@@ -29,13 +29,13 @@ public interface UserRepository extends Neo4jRepository<User, UUID> {
     List<Integer> getMostPopularUsers(@Param("count") int count);
 
     @Query("MATCH (u:User {userId: $userId})-[:FOLLOWS]->(f1:User)-[:FOLLOWS]->(r1:User) " +
-            "WHERE r1.userId <> u.userId AND r1.userId <> f1.userId " +
+            "WHERE r1.userId <> u.userId AND r1.userId <> f1.userId AND f1.userId <> u.userId " +
             "RETURN r1.userId as User " +
             "LIMIT 3")
     List<Integer> findPossibleSubscriptions(@Param("userId") int userId);
 
     @Query("MATCH (u:User)-[:FOLLOWS]->(f1:User)-[:FOLLOWS]->(r1:User {userId: $userId}) " +
-            "WHERE r1.userId <> u.userId AND r1.userId <> f1.userId " +
+            "WHERE r1.userId <> u.userId AND r1.userId <> f1.userId AND f1.userId <> u.userId " +
             "RETURN u.userId as User " +
             "LIMIT 3")
     List<Integer> findPossibleFollowers(@Param("userId") int userId);
