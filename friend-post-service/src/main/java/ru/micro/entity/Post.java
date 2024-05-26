@@ -48,6 +48,10 @@ public class Post {
     @NotNull
     private Integer imagesAmount;
 
+    @Column("likes_counter")
+    @NotNull
+    private Integer likesCounter;
+
     @Column("snippet_state")
     @NotNull
     private Integer snippetState;
