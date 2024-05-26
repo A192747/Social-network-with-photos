@@ -6,5 +6,5 @@ spring:
     name: post-upload-service
   cassandra:
     port: 9042
-    contact-points: post_bd
+    contact-points: socialNetworkKeyspace
     keyspace-name: socialNetworkKeyspace
