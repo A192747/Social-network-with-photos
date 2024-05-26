@@ -1,0 +1,80 @@
+openapi: "3.0.3"
+info:
+  title: "Social_network_with_photos API"
+  description: "Social_network_with_photos API"
+  version: "1.0.0"
+servers:
+  - url: "https://Social_network_with_photos"
+paths:
+  /posts/{postId}/likes:
+    get:
+      summary: "Получить количество лайков и лайкнут ли пост"
+      operationId: "getLikePost"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "id"
+          in: "header"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LikeResponse"
+    post:
+      summary: "Поставить лайк"
+      operationId: "createLikePost"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "id"
+          in: "header"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+    delete:
+      summary: "Убрать лайк"
+      operationId: "removeLikePost"
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+        - name: "id"
+          in: "header"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+components:
+  schemas:
+    LikeResponse:
+      type: "object"
+      properties:
+        countOfLikes:
+          type: "integer"
+          format: "int32"
+        liked:
+          type: "boolean"

@@ -1,13 +1,14 @@
 package ru.micro.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.micro.entity.Comment;
 import ru.micro.exceptions.NotValidException;
-import ru.micro.repository.PostRepository;
-import ru.micro.repository.CommentRepository;
-import ru.micro.repository.LikeRepository;
+import ru.micro.repository.secondary.PostRepository;
+import ru.micro.repository.primary.CommentRepository;
+import ru.micro.repository.primary.LikeRepository;
 import ru.micro.repository.UserRepository;
 
 import java.sql.Timestamp;
@@ -56,6 +57,50 @@ public class CommentLikeService {
                 commentRepository.removeCommentPost(commentId);
             } else {
                 throw new NotValidException("Вы не можете удалить этот комментарий!");
+            }
+        } else {
+            throw new NotValidException("Пост не существует!");
+        }
+    }
+
+    @Transactional(transactionManager = "transactionManager")
+    public List<Integer> getLikesPost(UUID postId) {
+        if (postRepository.findPost(postId)) {
+            if (likeRepository.findFieldPost(postId)) {
+                return likeRepository.findUsersLikePost(postId);
+            } else {
+                return new ArrayList<>();
+            }
+        } else {
+            throw new NotValidException("Пост не существует!");
+        }
+    }
+
+    @Transactional(transactionManager = "transactionManager")
+    public void createLikePost(UUID postId, Integer userId) {
+        if (postRepository.findPost(postId)) {
+            if (likeRepository.findFieldPost(postId)) {
+                if (!likeRepository.findUsersLikePost(postId).contains(userId)) {
+                    likeRepository.createLikePost(postId, userId);
+                } else {
+                    throw new NotValidException("Вы ставили лайк!");
+                }
+            } else {
+                likeRepository.createFieldPost(postId, userId);
+            }
+        } else {
+            throw new NotValidException("Пост не существует!");
+        }
+    }
+
+    @Transactional(transactionManager = "transactionManager")
+    public void removeLikePost(UUID postId, Integer userId) {
+        if (likeRepository.findFieldPost(postId)) {
+            int index = likeRepository.findUsersLikePost(postId).indexOf(userId);
+            if (index != -1) {
+                likeRepository.removeLikePost(postId, index);
+            } else {
+                throw new NotValidException("Вы не ставили лайк!");
             }
         } else {
             throw new NotValidException("Пост не существует!");

@@ -45,8 +45,8 @@ public class FriendlyPostService {
         if (friendPost == null) {
             friendPost = new FriendPost();
             friendPost.setId(UUID.randomUUID());
-            friendPost.setFriendlyPostTakenCount(1);
             friendPost.setUserId(userId);
+            friendPost.setFriendlyPostTakenCount(1);
             friendPost.setPostsIds(update(userId, friendPost));
         }
 
@@ -58,7 +58,9 @@ public class FriendlyPostService {
         if (recPostsIds == null) {
             recPostsIds = new HashSet<>();
         }
-        recPostsIds.addAll(friendPost.getPostsIds());
+        if (friendPost.getPostsIds() != null) {
+            recPostsIds.addAll(friendPost.getPostsIds());
+        }
         posts = getPostsArray(recPostsIds);
         friendPost.setNewPostsIds(null);
 

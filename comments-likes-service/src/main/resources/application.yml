@@ -4,7 +4,17 @@ server:
 spring:
   application:
     name: comments-likes-service
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: neoneoneo
   cassandra:
-    port: 9043
-    contact-points: comments_likes_db
-    keyspace-name: socialNetworkKeyspace2
+    primary:
+      port: 9043
+      contact-points: comments_likes_db
+      keyspace-name: socialNetworkKeyspace2
+    secondary:
+      port: 9042
+      contact-points: socialNetworkKeyspace
+      keyspace-name: socialNetworkKeyspace

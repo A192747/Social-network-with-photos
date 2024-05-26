@@ -13,7 +13,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class LikeResponse {
-    private UUID id;
-    private Integer postId;
-    private List<Integer> usersId;
+    private Integer countOfLikes;
+    private Boolean liked;
 }

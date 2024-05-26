@@ -1,7 +1,7 @@
 version: '3.1'
 services:
-  cassandra1:
+  cassandra:
     image: cassandra
     container_name: comments_likes_db
     ports:
-      - "9043:9043"
+      - "9050:9050"

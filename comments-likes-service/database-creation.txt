@@ -15,7 +15,6 @@ CREATE TABLE comments (
 );
 
 CREATE TABLE likes (
-    id UUID PRIMARY KEY,
     post_id UUID,
     users_id list<INT>
 );
