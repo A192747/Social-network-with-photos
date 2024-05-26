@@ -1,23 +1,21 @@
 #For cassandra in cqlsh
-CREATE KEYSPACE socialNetworkKeyspace WITH replication = {
+CREATE KEYSPACE socialNetworkKeyspace2 WITH replication = {
     'class': 'SimpleStrategy',
     'replication_factor': 3
 };
 
-USE socialNetworkKeyspace;
+USE socialNetworkKeyspace2;
 
 CREATE TABLE comments (
     id UUID PRIMARY KEY,
-    post_id INT,
-    answer_id INT,
+    post_id UUID,
+    user_id INT,
     text VARCHAR,
-    created_at timestamp,
+    created_at timestamp
 );
 
 CREATE TABLE likes (
     id UUID PRIMARY KEY,
-    post_id INT,
-    likes_counter INT,
-    users_id list<INT>,
-    created_at timestamp
+    post_id UUID,
+    users_id list<INT>
 );

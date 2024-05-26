@@ -37,7 +37,6 @@ public class FriendPostController {
                 post.getCreatedAt(),
                 post.getColorPreload(),
                 post.getImagesAmount(),
-                post.getLikesCounter(),
                 post.getSnippetState()
         );
     }

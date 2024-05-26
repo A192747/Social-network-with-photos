@@ -6,6 +6,5 @@ spring:
     name: post-upload-service
   cassandra:
     port: 9042
-    contact-points: socialNetworkDatabase
+    contact-points: post_bd
     keyspace-name: socialNetworkKeyspace
-    entity-base-package: ru.micro.DAO

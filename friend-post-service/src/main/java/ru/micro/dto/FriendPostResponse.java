@@ -21,6 +21,5 @@ public class FriendPostResponse {
     private Timestamp date;
     private List<String> colorPreload;
     private Integer imagesAmount;
-    private Integer likesCounter;
     private Integer snippetState;
 }

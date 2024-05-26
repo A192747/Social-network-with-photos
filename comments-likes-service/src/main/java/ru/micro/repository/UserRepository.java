@@ -11,17 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends Neo4jRepository<User, UUID> {
-    @Query("MATCH (u:User) RETURN u.userId")
-    Iterable<Integer> findAllUsers();
-
-    @Query("MATCH (u:User {userId: $userId})<-[:FOLLOWS]-(f:User) " +
-            "RETURN f.userId as User")
-    List<Integer> findFollowers(@Param("userId") int userId);
-
     @Query("MATCH (u:User {userId: $userId}) return u")
     User findByUserId(@Param("userId") int userId);
-
-    @Query("MATCH (u:User {userId: $userId})-[:FOLLOWS]->(f:User) " +
-            "RETURN f.userId as User")
-    List<Integer> findFollowing(@Param("userId") int userId);
 }

@@ -1,7 +1,7 @@
 version: '3.1'
 services:
-  mycassandra:
+  cassandra2:
     image: cassandra
-    container_name: socialNetworkDatabase
+    container_name: post_db
     ports:
       - "9042:9042"
