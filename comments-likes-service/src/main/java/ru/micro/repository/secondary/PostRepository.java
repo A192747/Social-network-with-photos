@@ -1,4 +1,4 @@
-package ru.micro.repository;
+package ru.micro.repository.secondary;
 
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.data.cassandra.repository.Query;
@@ -10,6 +10,12 @@ import java.util.UUID;
 
 @Repository
 public interface PostRepository extends CassandraRepository<Post, UUID> {
-    @Query("SELECT * FROM posts WHERE user_id =?0 and post_is_ready = true LIMIT ?1 ALLOW FILTERING")
-    List<Post> findFirstByUserIdOrderByCreatedAtDesc(int userId, int count);
+    @Query("SELECT COUNT(*) <> 0 FROM posts WHERE id =?0")
+    Boolean findPost(UUID postId);
+
+    @Query("SELECT user_id FROM posts WHERE id =?0")
+    Integer findOwnerPost(UUID postId);
+
+    @Query("SELECT id FROM posts")
+    List<UUID> allPost();
 }
